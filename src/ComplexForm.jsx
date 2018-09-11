@@ -55,11 +55,11 @@ export default class ComplexForm extends React.Component {
             if(isNaN(date)) {
                 return 'Please write your birth date on the format yyyy-mm-dd. I.e. 1955-02-24'
             }
-            let realAge = calculateAge(new Date(date))
+            let calculatedAge = calculateAge(new Date(date))
             if(!this.state.age.value) {
-                this.setAge(realAge)
-            } else if (realAge !== parseInt(this.state.age.value, 10)) {
-                return 'Dette stemmer ikke med alderen du har oppgitt'
+                this.setAge(calculatedAge)  // Set age if it is empty
+            } else if (calculatedAge !== parseInt(this.state.age.value, 10)) {
+                return 'This date does not match your age'
             }
         }
     })
