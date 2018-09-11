@@ -1,0 +1,19 @@
+body {
+    font-family: Helvetica, serif;
+    font-size: 1rem;
+}
+
+input {
+    width: 8rem;
+    margin: 0.2rem;
+    font-size: 1rem;
+}
+label {
+    display: inline-block;
+    width: 5rem;
+}
+
+button {
+    margin: 1rem 0;
+    font-size: 1rem;
+}
