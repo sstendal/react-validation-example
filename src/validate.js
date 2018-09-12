@@ -127,12 +127,29 @@ export function createFieldValidateFunction(component, fieldName, errorMessageFu
     @returns {Function}
  */
 export function createFieldUpdateFunction(component, fieldName, validateFunction, setStateCallback) {
-    return newValue => {
+    return (newValue, checked) => {
         if (!component.state[fieldName]) throw Error(`Field ${fieldName} does not exist in component state`)
+
+        // By default, let new value replace old value
+        let newValueState = newValue
+
+        // If value is an array, add or remove newValue
+        if(component.state[fieldName].value && component.state[fieldName].value.constructor === Array) {
+            if(checked) {
+                if(!component.state[fieldName].value.includes(newValue)) {
+                    newValueState = [
+                        ...component.state[fieldName].value,
+                        newValue
+                    ]
+                }
+            } else {
+                newValueState = component.state[fieldName].value.filter(v => v !== newValue)
+            }
+        }
 
         const newState = {
             [fieldName]: {
-                value: newValue,
+                value: newValueState,
                 errorMessage: component.state[fieldName].errorMessage,
                 valid: component.state[fieldName].valid,
                 touched: component.state[fieldName].touched || (component.state[fieldName].value !== newValue)

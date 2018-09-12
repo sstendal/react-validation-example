@@ -9,7 +9,8 @@ export default class ComplexForm extends React.Component {
         this.state = {
             name: createFieldDefaultState(''),
             age: createFieldDefaultState(''),
-            birthDate: createFieldDefaultState('')
+            birthDate: createFieldDefaultState(''),
+            fruits: createFieldDefaultState([])
         }
     }
 
@@ -65,14 +66,18 @@ export default class ComplexForm extends React.Component {
     })
     setBirthDate = createFieldUpdateFunction(this, 'birthDate', this.validateBirthDate)
 
+    validateFruits = createFieldValidateFunction(this, 'fruits', () => this.state.fruits.value.length === 0 && 'You must select at least one fruit')
+    setFruit = createFieldUpdateFunction(this, 'fruits', this.validateFruits)
+
     submit = (e) => {
         e.preventDefault()
 
         let validateAge = this.validateAge()
         let validateBirthDate = this.validateBirthDate()
         let validateName = this.validateName()
+        let validateFruits = this.validateFruits()
 
-        if(validateName && validateAge && validateBirthDate) {
+        if(validateName && validateAge && validateBirthDate && validateFruits) {
             console.log('Submitting form ...')
         }
 
@@ -113,6 +118,21 @@ export default class ComplexForm extends React.Component {
                            onBlur={this.validateBirthDate}
                     />
                     <span>{this.state.birthDate.errorMessage}</span>
+                </div>
+
+                <div>
+                    <label>Fruits:</label>
+                    <ul>
+                        <li>
+                            <input type="checkbox" checked={this.state.fruits.value.includes('apple')}
+                                   onChange={e => this.setFruit('apple', e.target.checked)}/> Apple
+                        </li>
+                        <li>
+                            <input type="checkbox" checked={this.state.fruits.value.includes('orange')}
+                                   onChange={e => this.setFruit('orange', e.target.checked)}/> Orange
+                        </li>
+                    </ul>
+                    <span>{this.state.fruits.errorMessage}</span>
                 </div>
 
                 <button onClick={this.submit}>Submit</button>
